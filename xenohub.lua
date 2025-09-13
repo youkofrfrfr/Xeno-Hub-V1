@@ -1,5 +1,16 @@
--- Xeno Hub Script with Loading Screen
+-- Xeno Hub V1
 -- Made by ! Nexus
+
+print("Xeno Hub script has started!") -- Debug for executor console
+
+-- Try to notify in-game
+pcall(function()
+	game.StarterGui:SetCore("SendNotification", {
+		Title = "Xeno Hub";
+		Text = "Xeno Hub is Loading...";
+		Duration = 3;
+	})
+end)
 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -99,16 +110,25 @@ end
 WalkBox.FocusLost:Connect(updateWalkSpeed)
 JumpBox.FocusLost:Connect(updateJumpPower)
 
-game.Players.PlayerAdded:Connect(function(plr)
-	plr.CharacterAdded:Connect(function(char)
-		character = char
-		humanoid = character:WaitForChild("Humanoid")
-	end)
+player.CharacterAdded:Connect(function(char)
+	character = char
+	humanoid = character:WaitForChild("Humanoid")
 end)
 
 -- // Loading screen fade out
-task.wait(2.5) -- how long the loading screen stays
+task.wait(2.5)
 LoadingFrame:TweenSize(UDim2.new(0,0,0,0), "Out", "Quad", 1, true, function()
 	LoadingFrame:Destroy()
 	MainFrame.Visible = true
+
+	-- Notify when hub is ready
+	pcall(function()
+		game.StarterGui:SetCore("SendNotification", {
+			Title = "Xeno Hub";
+			Text = "Loaded Successfully!";
+			Duration = 3;
+		})
+	end)
+
+	print("Xeno Hub is fully loaded!") -- Debug confirm
 end)
